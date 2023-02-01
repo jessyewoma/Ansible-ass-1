@@ -1,0 +1,11 @@
+
+- name: Schedule time display script
+  hosts: tomcat
+  become: yes
+  tasks:
+  - name: Create cron job
+    cron:
+      name: Display current time
+      job: "/usr/local/bin/time-display.sh"
+      minute: "*/2"
+...
