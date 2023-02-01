@@ -1,6 +1,6 @@
 
 - name: Schedule time display script
-  hosts: tomcat
+  hosts: g1
   become: yes
   tasks:
   - name: Create cron job
