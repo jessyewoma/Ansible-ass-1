@@ -1,4 +1,4 @@
-
+---
 - name: Schedule time display script
   hosts: g1
   become: yes
@@ -8,4 +8,4 @@
       name: Display current time
       job: "/usr/local/bin/time-display.sh"
       minute: "*/2"
-...
+ ...     
