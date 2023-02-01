@@ -1,45 +1,24 @@
 ---
-- name: Install Tomcat on Centos
-  hosts: tomcat
-  become: yes
-  tasks:
-  - name: Update the system
-    yum:
-      name: "*"
-      state: latest
+ - name: install tomcat server
+   hosts: g1
+   become: true
 
-  - name: Install Java
-    yum:
-      name: java-1.8.0-openjdk
-      state: present
+   tasks:
+   - name: install java
+     yum:
+      name: java-1.8*
 
-  - name: Download Tomcat
-    get_url:
-      url: http://www-us.apache.org/dist/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
-      dest: /tmp/tomcat.tar.gz
+   - name: download tomcat server packages
+     get_url:
+       url: https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.27/bin/apache-tomcat-10.0.27.tar.gz
+       dest: /usr/local
 
-  - name: Extract Tomcat
-    unarchive:
-      src: /tmp/tomcat.tar.gz
-      dest: /opt/
+   - name: extract tomcat packages
+     unarchive:
+       src: /usr/local/apache-tomcat-10.0.27.tar.gz
+       dest: /usr/local
+       remote_src: yes
 
-  - name: Create Tomcat symlink
-    file:
-      src: /opt/apache-tomcat-9.0.31
-      dest: /opt/tomcat
-      state: link
-
-  - name: Add Tomcat to Environment Variables
-    lineinfile:
-      dest: /etc/environment
-      line: "CATALINA_HOME=/opt/tomcat"
-      state: present
-      insertafter: EOL
-
-       name: 
-    file:
-      src: /opt/apache-tomcat-9.0.31
-      dest: /opt/tomcat
-      state: link
-
+   - name: start tomcat services
+     shell: nohup /usr/local/apache-tomcat-10.0.27/bin/startup.sh
 ...
