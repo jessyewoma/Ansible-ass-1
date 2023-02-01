@@ -1,6 +1,6 @@
 ---
 - name: Deploy Time Display Script
-  hosts: tomcat
+  hosts: g1
   become: yes
   tasks:
   - name: Copy script to servers
