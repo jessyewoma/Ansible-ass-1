@@ -1,27 +1,24 @@
 ---
-- name: Deploy Time Display Script
-  hosts: g1
-  become: yes
-  tasks:
-  - name: Copy script to servers
-    copy:
-      src: /path/to/time-display.sh
-      dest: /usr/local/bin/
-      mode: 0755
+ - name: install tomcat server
+   hosts: all
+   become: true
 
-  - name: Make script executable
-    file:
-      path: /usr/local/bin/time-display.sh
-      mode: 0755
+   tasks:
+   - name: install java
+     yum:
+      name: java-1.8*
 
-- name: Schedule time display script
-  hosts: tomcat
-  become: yes
-  tasks:
-  - name: Create cron job
-    cron:
-      name: Display current time
-      job: "/usr/local/bin/time-display.sh"
-      minute: "*/2"
+   - name: download tomcat server packages
+     get_url:
+       url: https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.27/bin/apache-tomcat-10.0.27.tar.gz
+       dest: /usr/local
+
+   - name: extract tomcat packages
+     unarchive:
+       src: /usr/local/apache-tomcat-10.0.27.tar.gz
+       dest: /usr/local
+       remote_src: yes
+
+   - name: start tomcat services
+     shell: nohup /usr/local/apache-tomcat-10.0.27/bin/startup.sh
 ...
-
